@@ -12,7 +12,7 @@ export const LSBCenter = () => {
   const [result, setResult] = useState<EmbeddingResult | null>(null);
   const [binaryDataStr, setBinaryDataStr] = useState<string>('');
   const [isUploading, setIsUploading] = useState(false);
-  
+
   const imageRef = useRef<HTMLImageElement>(null);
 
   const handleImageUpload = (e: React.ChangeEvent<HTMLInputElement>) => {
@@ -60,7 +60,7 @@ export const LSBCenter = () => {
 
   const handleSaveToSupabase = async () => {
     if (!result) return;
-    
+
     setIsUploading(true);
     try {
       const fileName = `stego_${Date.now()}.png`;
@@ -70,7 +70,7 @@ export const LSBCenter = () => {
           contentType: 'image/png',
           upsert: false
         });
-        
+
       if (error) throw error;
       toast.success('Successfully saved to Supabase Storage!');
     } catch (error: any) {
@@ -90,7 +90,7 @@ export const LSBCenter = () => {
         </div>
         <div>
           <h1 className="text-3xl font-bold text-gray-900">LSB Steganography Center</h1>
-          <p className="text-gray-600">Module 6: Hide encrypted metadata inside image pixels</p>
+
         </div>
       </div>
 
@@ -106,10 +106,10 @@ export const LSBCenter = () => {
             <div className="border-2 border-dashed border-gray-300 rounded-lg p-6 flex flex-col items-center justify-center text-center hover:border-primary/50 transition-colors">
               {imagePreview ? (
                 <div className="space-y-4 w-full flex flex-col items-center">
-                  <img 
-                    ref={imageRef} 
-                    src={imagePreview} 
-                    alt="Cover" 
+                  <img
+                    ref={imageRef}
+                    src={imagePreview}
+                    alt="Cover"
                     className="max-h-48 rounded-lg object-contain shadow-lg"
                   />
                   <label className="cursor-pointer text-sm text-primary hover:underline">
@@ -142,7 +142,7 @@ export const LSBCenter = () => {
             />
           </div>
 
-          <button 
+          <button
             onClick={handleEmbed}
             disabled={!imageFile || !ciphertext || isProcessing}
             className="w-full bg-gradient-to-r from-primary to-accent hover:opacity-90 text-white font-bold rounded-xl px-6 py-4 shadow-[0_0_20px_rgba(176,38,255,0.4)] disabled:opacity-50 disabled:cursor-not-allowed flex items-center justify-center gap-3 transition-all text-lg"
@@ -200,10 +200,10 @@ export const LSBCenter = () => {
                     const mod = result.sampleModified[idx];
                     const origBin = formatBinaryByte(orig);
                     const modBin = formatBinaryByte(mod);
-                    
+
                     // Highlight the last bit if changed
                     const isChanged = orig !== mod;
-                    
+
                     return (
                       <div key={idx} className="grid grid-cols-2 gap-4 bg-white p-2 rounded border border-gray-100 font-mono text-sm text-center items-center">
                         <div className="text-gray-700 tracking-widest">{origBin}</div>
@@ -257,18 +257,18 @@ export const LSBCenter = () => {
               </div>
             )}
           </div>
-          
+
           {/* Output Actions */}
           {result && (
             <div className="grid grid-cols-2 gap-4 pt-4 border-t border-gray-200">
-              <button 
+              <button
                 onClick={handleDownload}
                 className="flex items-center justify-center gap-2 py-3 bg-gray-100 hover:bg-gray-200 border border-gray-300 text-gray-900 font-medium rounded-lg transition-colors"
               >
                 <Download className="w-5 h-5" />
                 Download Stego PNG
               </button>
-              <button 
+              <button
                 onClick={handleSaveToSupabase}
                 disabled={isUploading}
                 className="flex items-center justify-center gap-2 py-3 bg-primary/20 hover:bg-primary/30 border border-primary/30 text-primary font-medium rounded-lg transition-colors disabled:opacity-50"

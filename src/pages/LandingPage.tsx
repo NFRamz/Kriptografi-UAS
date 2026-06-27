@@ -46,7 +46,7 @@ export const LandingPage = () => {
           animate="visible"
           className="w-full max-w-6xl mx-auto flex flex-col items-center text-center space-y-8"
         >
-          <motion.div 
+          <motion.div
             className="flex flex-col items-center text-center space-y-8 p-10 rounded-[3rem] relative group w-full max-w-5xl mx-auto"
           >
             {/* Permanent Subtle Background that intensifies on hover */}
@@ -62,13 +62,13 @@ export const LandingPage = () => {
                 <DecryptedText text="Lindungi Hak Kepemilikan" animateOn="view" sequential={true} revealDirection="start" speed={100} />
               </span> <br />
               <span className="text-transparent bg-clip-text bg-gradient-to-r from-primary to-accent relative inline-block drop-shadow-sm mt-2">
-                <DecryptedText text="Aset Digital Anda." animateOn="view" sequential={true} revealDirection="start" speed={100} />
+                <DecryptedText text="Aset Digital ." animateOn="view" sequential={true} revealDirection="start" speed={100} />
               </span>
             </motion.h1>
 
             <motion.p variants={itemVariants} className="text-gray-800 max-w-3xl text-lg md:text-xl leading-relaxed font-medium drop-shadow-sm transition-transform duration-500 group-hover:scale-[1.01]">
               <DecryptedText
-                text="DigiProof membuktikan kepemilikan aset digital Anda secara matematis dengan menyematkan metadata terenkripsi AES-256 langsung ke dalam file Anda menggunakan Steganografi LSB."
+                text="DigiProof membuktikan kepemilikan aset digital dengan menyematkan metadata terenkripsi AES-256 langsung ke dalam file Anda menggunakan Steganografi LSB."
                 animateOn="view"
                 speed={60}
                 maxIterations={10}
@@ -92,21 +92,21 @@ export const LandingPage = () => {
                 <Lock className="w-6 h-6 text-primary" />
               </div>
               <h3 className="text-xl font-bold text-gray-900 mb-3">Enkripsi AES-256</h3>
-              <p className="text-gray-600 text-sm leading-relaxed">Metadata kepemilikan Anda dienkripsi dengan standar militer AES-256 sebelum disematkan, membuatnya mustahil untuk dipalsukan atau dibaca tanpa kunci rahasia.</p>
+              <p className="text-gray-600 text-sm leading-relaxed">Metadata kepemilikan  dienkripsi dengan AES-256, membuatnya mustahil untuk dipalsukan atau dibaca tanpa kunci rahasia.</p>
             </div>
             <div className="glass-card p-8 text-left group">
               <div className="w-12 h-12 rounded-xl bg-accent/20 flex items-center justify-center mb-6 group-hover:scale-110 transition-transform">
                 <FileImage className="w-6 h-6 text-accent" />
               </div>
               <h3 className="text-xl font-bold text-gray-900 mb-3">Steganografi LSB</h3>
-              <p className="text-gray-600 text-sm leading-relaxed">Ciphertext disembunyikan secara mulus di dalam bit terendah (Least Significant Bits) piksel gambar Anda, menjaga kualitas visual tetap sempurna sekaligus mengamankan data.</p>
+              <p className="text-gray-600 text-sm leading-relaxed">Ciphertext disembunyikan di dalam bit terendah (Least Significant Bits) piksel gambar, menjaga kualitas visual tetap sempurna sekaligus mengamankan data.</p>
             </div>
             <div className="glass-card p-8 text-left group">
               <div className="w-12 h-12 rounded-xl bg-blue-100 flex items-center justify-center mb-6 group-hover:scale-110 transition-transform">
                 <Shield className="w-6 h-6 text-blue-600" />
               </div>
               <h3 className="text-xl font-bold text-gray-900 mb-3">Verifikasi Instan</h3>
-              <p className="text-gray-600 text-sm leading-relaxed">Siapa pun dapat mengunggah aset yang telah terproteksi ke mesin kami untuk secara instan mengekstrak, mendekripsi, dan memverifikasi klaim kepemilikan asli Anda.</p>
+              <p className="text-gray-600 text-sm leading-relaxed">Siapa pun dapat mengunggah aset yang telah terproteksi untuk secara instan mengekstrak, mendekripsi, dan memverifikasi klaim kepemilikan asli.</p>
             </div>
           </motion.div>
 

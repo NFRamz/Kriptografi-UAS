@@ -53,7 +53,7 @@ export const ProtectedAssetGenerator = () => {
     const hash = AESCrypto.generateHash(title + Date.now().toString());
 
     const payload: MetadataPayload = {
-      owner_name: 'Naufal Ramzi_202310370311026',
+      owner_name: 'Naufal Ramzi - 202310370311026 - Kriptografi B',
       asset_id: crypto.randomUUID(),
       asset_type: category,
       timestamp: new Date().toISOString(),
@@ -200,7 +200,7 @@ export const ProtectedAssetGenerator = () => {
         </div>
         <div>
           <h1 className="text-4xl font-extrabold text-gray-900 tracking-tight drop-shadow-md">Generator Proteksi Aset</h1>
-          <p className="text-gray-600 mt-1 text-lg">Modul 7: Amankan hak kepemilikan Anda dengan AES-256 dan Steganografi LSB</p>
+
         </div>
       </div>
 

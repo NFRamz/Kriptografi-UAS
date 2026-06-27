@@ -39,16 +39,17 @@ export class LSBSteganography {
 
   static async embedData(imageElement: HTMLImageElement, text: string): Promise<EmbeddingResult> {
     const canvas = document.createElement('canvas');
-    const ctx = canvas.getContext('2d')!;
-    canvas.width = imageElement.width;
-    canvas.height = imageElement.height;
-    ctx.drawImage(imageElement, 0, 0);
+    const ctx = canvas.getContext('2d', { willReadFrequently: true })!;
+    canvas.width = imageElement.naturalWidth || imageElement.width;
+    canvas.height = imageElement.naturalHeight || imageElement.height;
+    ctx.drawImage(imageElement, 0, 0, canvas.width, canvas.height);
 
     const imgData = ctx.getImageData(0, 0, canvas.width, canvas.height);
     const data = imgData.data;
 
     // Convert text to binary and add 32-bit length prefix
-    const textBinary = this.stringToBinary(text);
+    // We add a null terminator to ensure extraction stops cleanly without reading trailing garbage
+    const textBinary = this.stringToBinary(text + '\0');
     const lengthBinary: number[] = [];
     let len = textBinary.length;
     for (let i = 31; i >= 0; i--) {
@@ -129,10 +130,10 @@ export class LSBSteganography {
 
   static async extractData(imageElement: HTMLImageElement): Promise<{ text: string, extractedBits: number }> {
     const canvas = document.createElement('canvas');
-    const ctx = canvas.getContext('2d')!;
+    const ctx = canvas.getContext('2d', { willReadFrequently: true })!;
     canvas.width = imageElement.naturalWidth || imageElement.width;
     canvas.height = imageElement.naturalHeight || imageElement.height;
-    ctx.drawImage(imageElement, 0, 0);
+    ctx.drawImage(imageElement, 0, 0, canvas.width, canvas.height);
 
     const imgData = ctx.getImageData(0, 0, canvas.width, canvas.height);
     const data = imgData.data;

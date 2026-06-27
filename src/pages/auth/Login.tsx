@@ -40,55 +40,16 @@ export const Login = () => {
     <div className="flex-1 flex items-center justify-center p-4">
       <div className="w-full max-w-md glass-card p-8 rounded-2xl relative overflow-hidden">
         <div className="absolute top-0 left-0 w-full h-1 bg-gradient-to-r from-primary to-accent"></div>
-        
+
         <div className="flex justify-center mb-8">
           <div className="p-3 bg-gradient-to-br from-primary/20 to-accent/20 rounded-xl border border-gray-200">
             <Shield className="w-8 h-8 text-primary" />
           </div>
         </div>
-        
-        <h2 className="text-2xl font-bold text-gray-900 text-center mb-2">Selamat Datang Kembali</h2>
-        <p className="text-gray-600 text-center mb-8 text-sm">Masuk ke akun DigiProof Anda</p>
-        
-        <form className="space-y-4" onSubmit={handleLogin}>
-          <div>
-            <label className="block text-sm font-medium text-gray-700 mb-1">Email</label>
-            <input 
-              type="email" 
-              value={email}
-              onChange={(e) => setEmail(e.target.value)}
-              className="w-full bg-white border border-gray-200 rounded-lg px-4 py-2 text-gray-900 focus:outline-none focus:border-primary focus:ring-1 focus:ring-primary transition-all" 
-              placeholder="name@company.com" 
-              required
-            />
-          </div>
-          <div>
-            <div className="flex justify-between items-center mb-1">
-              <label className="block text-sm font-medium text-gray-700">Kata Sandi</label>
-              <Link to="/auth/forgot-password" className="text-xs text-primary hover:underline">Lupa kata sandi?</Link>
-            </div>
-            <input 
-              type="password" 
-              value={password}
-              onChange={(e) => setPassword(e.target.value)}
-              className="w-full bg-white border border-gray-200 rounded-lg px-4 py-2 text-gray-900 focus:outline-none focus:border-primary focus:ring-1 focus:ring-primary transition-all" 
-              placeholder="••••••••" 
-              required
-            />
-          </div>
-          
-          <button 
-            type="submit" 
-            disabled={isLoading}
-            className="w-full bg-primary hover:bg-primary/90 text-primary-foreground font-semibold rounded-lg px-4 py-2 mt-4 transition-all shadow-[0_0_15px_rgba(0,240,255,0.3)] disabled:opacity-70 disabled:cursor-not-allowed flex justify-center items-center gap-2"
-          >
-            {isLoading ? <Loader2 className="w-5 h-5 animate-spin" /> : 'Masuk'}
-          </button>
-        </form>
-        
-        <p className="text-center text-gray-600 text-sm mt-6">
-          Belum punya akun? <Link to="/auth/register" className="text-primary hover:underline">Daftar</Link>
-        </p>
+
+        <h2 className="text-2xl font-bold text-gray-900 text-center mb-2">Maaf</h2>
+        <p className="text-gray-600 text-center mb-8 text-xl">Web ini memprioritaskan proses kriptografi & Steganografi. Jadi untuk simulasi login tinggal direload saja, agar langsung terlogin</p>
+
       </div>
     </div>
   );

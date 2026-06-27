@@ -32,7 +32,7 @@ export const SecurityLab = () => {
   const [labData, setLabData] = useState<LabData | null>(null);
   const [isInitializing, setIsInitializing] = useState(false);
   const [loadingStep, setLoadingStep] = useState<string | null>(null);
-  
+
   // Init Form State
   const [imageFile, setImageFile] = useState<File | null>(null);
   const [imagePreview, setImagePreview] = useState<string | null>(null);
@@ -54,7 +54,7 @@ export const SecurityLab = () => {
     if (!imagePreview || !title || !owner) return;
     setIsInitializing(true);
     setLoadingStep('Memuat gambar original...');
-    
+
     try {
       // 1. Load Original Image
       await new Promise(r => setTimeout(r, 600)); // Visual delay
@@ -69,7 +69,7 @@ export const SecurityLab = () => {
       // 2. AES Crypto
       setLoadingStep('Membangun Metadata & Melakukan Enkripsi AES-256...');
       await new Promise(r => setTimeout(r, 800)); // Visual delay
-      
+
       const aesKey = AESCrypto.generateSecureKey();
       const metadata: MetadataPayload = {
         owner_name: owner,
@@ -84,14 +84,14 @@ export const SecurityLab = () => {
       // 3. Binary Conversion
       setLoadingStep('Mengonversi Ciphertext ke deret Biner...');
       await new Promise(r => setTimeout(r, 600)); // Visual delay
-      
+
       const binaryArr = LSBSteganography.stringToBinary(ciphertext);
       const binaryStr = binaryArr.join('');
 
       // 4. LSB Embedding
       setLoadingStep('Menyisipkan Biner ke LSB piksel gambar...');
       await new Promise(r => setTimeout(r, 800)); // Visual delay
-      
+
       const embeddingResult = await LSBSteganography.embedData(origImg, ciphertext);
 
       // 5. Load Protected Image for Comparison
@@ -106,7 +106,7 @@ export const SecurityLab = () => {
       // 6. Diff Mapping
       setLoadingStep('Menganalisis Distorsi Piksel (Peta Perbedaan)...');
       await new Promise(r => setTimeout(r, 800)); // Visual delay
-      
+
       const comparisonResult = await ImageComparator.compareImages(origImg, protImg);
 
       setLoadingStep('Menyiapkan Visualisasi Lab...');
@@ -124,7 +124,7 @@ export const SecurityLab = () => {
         comparisonResult,
         embeddingResult
       });
-      
+
       toast.success('Lab Environment Initialized successfully!');
     } catch (error: any) {
       toast.error('Gagal menginisialisasi lab: ' + error.message);
@@ -138,60 +138,60 @@ export const SecurityLab = () => {
     return (
       <>
         <div className="flex-1 w-full max-w-4xl mx-auto px-6 py-12 flex flex-col items-center justify-center min-h-[80vh]">
-        <div className="text-center mb-10">
-          <div className="inline-flex p-4 bg-primary/10 rounded-2xl border border-primary/20 mb-6">
-            <Database className="w-12 h-12 text-primary" />
+          <div className="text-center mb-10">
+            <div className="inline-flex p-4 bg-primary/10 rounded-2xl border border-primary/20 mb-6">
+              <Database className="w-12 h-12 text-primary" />
+            </div>
+            <h1 className="text-4xl font-extrabold text-gray-900 tracking-tight">Security Visualization Lab</h1>
+            <p className="text-gray-600 mt-4 text-lg max-w-2xl mx-auto">
+              Pelajari cara kerja internal DigiProof. Modul ini mendemonstrasikan secara visual proses Kriptografi AES-256 dan Steganografi LSB secara step-by-step menggunakan data nyata.
+            </p>
           </div>
-          <h1 className="text-4xl font-extrabold text-gray-900 tracking-tight">Security Visualization Lab</h1>
-          <p className="text-gray-600 mt-4 text-lg max-w-2xl mx-auto">
-            Pelajari cara kerja internal DigiProof. Modul ini mendemonstrasikan secara visual proses Kriptografi AES-256 dan Steganografi LSB secara step-by-step menggunakan data nyata.
-          </p>
-        </div>
 
-        <div className="glass-card p-10 w-full rounded-3xl border border-gray-200 bg-white/50 backdrop-blur-xl shadow-xl">
-          <h2 className="text-xl font-semibold mb-6 flex items-center gap-2">
-            <span className="w-8 h-8 rounded-full bg-primary text-white flex items-center justify-center font-bold">1</span>
-            Inisialisasi Data Lab
-          </h2>
-          
-          <div className="space-y-6">
-            <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-              <div className="border-2 border-dashed border-gray-300 rounded-xl p-6 flex flex-col items-center justify-center text-center hover:border-primary/50 transition-colors relative h-64">
-                {imagePreview ? (
-                  <>
-                    <img src={imagePreview} alt="Preview" className="max-h-full object-contain rounded" />
-                    <label className="absolute inset-0 bg-black/50 text-white opacity-0 hover:opacity-100 flex items-center justify-center cursor-pointer transition-opacity rounded-xl font-medium">
-                      Ganti Gambar
+          <div className="glass-card p-10 w-full rounded-3xl border border-gray-200 bg-white/50 backdrop-blur-xl shadow-xl">
+            <h2 className="text-xl font-semibold mb-6 flex items-center gap-2">
+              <span className="w-8 h-8 rounded-full bg-primary text-white flex items-center justify-center font-bold">1</span>
+              Inisialisasi Data Lab
+            </h2>
+
+            <div className="space-y-6">
+              <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+                <div className="border-2 border-dashed border-gray-300 rounded-xl p-6 flex flex-col items-center justify-center text-center hover:border-primary/50 transition-colors relative h-64">
+                  {imagePreview ? (
+                    <>
+                      <img src={imagePreview} alt="Preview" className="max-h-full object-contain rounded" />
+                      <label className="absolute inset-0 bg-black/50 text-white opacity-0 hover:opacity-100 flex items-center justify-center cursor-pointer transition-opacity rounded-xl font-medium">
+                        Ganti Gambar
+                        <input type="file" className="hidden" accept="image/png, image/jpeg" onChange={handleImageUpload} />
+                      </label>
+                    </>
+                  ) : (
+                    <label className="cursor-pointer flex flex-col items-center justify-center w-full h-full">
+                      <Upload className="w-10 h-10 text-gray-400 mb-2" />
+                      <span className="text-gray-900 font-medium">Unggah Gambar Uji Coba</span>
+                      <span className="text-sm text-gray-500">PNG atau JPEG</span>
                       <input type="file" className="hidden" accept="image/png, image/jpeg" onChange={handleImageUpload} />
                     </label>
-                  </>
-                ) : (
-                  <label className="cursor-pointer flex flex-col items-center justify-center w-full h-full">
-                    <Upload className="w-10 h-10 text-gray-400 mb-2" />
-                    <span className="text-gray-900 font-medium">Unggah Gambar Uji Coba</span>
-                    <span className="text-sm text-gray-500">PNG atau JPEG</span>
-                    <input type="file" className="hidden" accept="image/png, image/jpeg" onChange={handleImageUpload} />
-                  </label>
-                )}
-              </div>
-              <div className="space-y-4 flex flex-col justify-center">
-                <div>
-                  <label className="block text-sm font-semibold text-gray-700 mb-1">Judul Aset Simulasi</label>
-                  <input type="text" value={title} onChange={(e) => setTitle(e.target.value)} className="w-full bg-white border border-gray-200 rounded-lg px-4 py-3 focus:outline-none focus:border-primary focus:ring-1 focus:ring-primary text-gray-900" placeholder="Contoh: Desain Rahasia" />
+                  )}
                 </div>
-                <div>
-                  <label className="block text-sm font-semibold text-gray-700 mb-1">Nama Pemilik Data</label>
-                  <input type="text" value={owner} onChange={(e) => setOwner(e.target.value)} className="w-full bg-white border border-gray-200 rounded-lg px-4 py-3 focus:outline-none focus:border-primary focus:ring-1 focus:ring-primary text-gray-900" />
+                <div className="space-y-4 flex flex-col justify-center">
+                  <div>
+                    <label className="block text-sm font-semibold text-gray-700 mb-1">Judul Aset Simulasi</label>
+                    <input type="text" value={title} onChange={(e) => setTitle(e.target.value)} className="w-full bg-white border border-gray-200 rounded-lg px-4 py-3 focus:outline-none focus:border-primary focus:ring-1 focus:ring-primary text-gray-900" placeholder="Contoh: Desain Rahasia" />
+                  </div>
+                  <div>
+                    <label className="block text-sm font-semibold text-gray-700 mb-1">Nama Pemilik Data</label>
+                    <input type="text" value={owner} onChange={(e) => setOwner(e.target.value)} className="w-full bg-white border border-gray-200 rounded-lg px-4 py-3 focus:outline-none focus:border-primary focus:ring-1 focus:ring-primary text-gray-900" />
+                  </div>
                 </div>
               </div>
-            </div>
 
-              <button 
+              <button
                 onClick={initializeLab}
                 disabled={!imageFile || !title || isInitializing}
                 className="w-full bg-primary hover:bg-primary/90 text-white font-bold rounded-xl px-6 py-4 transition-all disabled:opacity-50 flex items-center justify-center gap-3 shadow-[0_0_20px_rgba(0,150,200,0.3)] hover:-translate-y-1 mt-4 text-lg"
               >
-                <Key className="w-6 h-6"/> Initialize Lab Engine
+                <Key className="w-6 h-6" /> Initialize Lab Engine
               </button>
             </div>
           </div>
@@ -223,9 +223,9 @@ export const SecurityLab = () => {
       {/* Header */}
       <div className="text-center">
         <h1 className="text-4xl font-extrabold text-gray-900 tracking-tight">Security Visualization Lab</h1>
-        <p className="text-gray-600 mt-2 text-lg">Menganalisis hasil nyata dari proses AES-256 dan Steganografi LSB</p>
-        <motion.div 
-          animate={{ y: [0, 10, 0] }} 
+        <p className="text-gray-600 mt-2 text-lg">Menganalisis proses AES-256 dan Steganografi LSB</p>
+        <motion.div
+          animate={{ y: [0, 10, 0] }}
           transition={{ repeat: Infinity, duration: 2 }}
           className="flex justify-center mt-8 text-primary"
         >
@@ -262,10 +262,8 @@ export const SecurityLab = () => {
         <VerificationTimeline data={labData} />
       </section>
 
-      <section id="section-8">
-        <AttackSimulation data={labData} />
-      </section>
-      
+
+
       <div className="pb-20 text-center text-gray-500 font-medium">
         -- End of Visualization Lab --
       </div>

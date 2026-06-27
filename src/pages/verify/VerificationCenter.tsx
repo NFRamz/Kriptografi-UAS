@@ -43,11 +43,11 @@ export const VerificationCenter = () => {
   const extractHiddenData = async () => {
     if (!imagePreview) return;
     setIsProcessing(true);
-    
+
     try {
       const img = new Image();
       img.crossOrigin = 'Anonymous';
-      
+
       await new Promise((resolve, reject) => {
         img.onload = resolve;
         img.onerror = () => reject(new Error('Failed to load image into memory'));
@@ -60,11 +60,11 @@ export const VerificationCenter = () => {
       }
 
       const { text } = await LSBSteganography.extractData(img);
-      
+
       // Safety: Prevent browser freeze by truncating absurdly long noise strings
       // Legitimate AES ciphertext for our JSON is rarely over 1000 characters.
       const safeText = text.length > 2000 ? text.substring(0, 2000) + '... (truncated)' : text;
-      
+
       setExtractedCiphertext(safeText);
       setStep(2);
       toast.success('Data tersembunyi berhasil diekstrak!');
@@ -87,7 +87,9 @@ export const VerificationCenter = () => {
     setIsProcessing(true);
     setTimeout(() => {
       try {
-        const decoded = AESCrypto.decryptMetadata(extractedCiphertext, aesKeyInput);
+        const cleanCiphertext = extractedCiphertext.trim();
+        const cleanKey = aesKeyInput.trim();
+        const decoded = AESCrypto.decryptMetadata(cleanCiphertext, cleanKey);
         setMetadata(decoded);
         setVerificationStatus('Verified Original');
         setStep(4);
@@ -150,7 +152,7 @@ export const VerificationCenter = () => {
         </div>
         <div>
           <h1 className="text-4xl font-extrabold text-gray-900 tracking-tight drop-shadow-md">Pusat Verifikasi Kepemilikan</h1>
-          <p className="text-gray-600 mt-1 text-lg">Modul 8: Unggah aset untuk mengekstrak, mendekripsi, dan memverifikasi kepemilikan</p>
+
         </div>
       </div>
 
@@ -159,7 +161,7 @@ export const VerificationCenter = () => {
         <div className="space-y-8">
           <div className={`glass-card p-8 rounded-3xl border ${step >= 1 ? 'border-primary/50 shadow-[0_0_20px_rgba(0,240,255,0.1)]' : 'border-gray-200'} transition-all duration-500`}>
             <h2 className="text-2xl font-bold text-gray-900 mb-6 flex items-center gap-3">
-              <span className="w-8 h-8 rounded-full bg-primary/20 text-primary flex items-center justify-center text-sm">1</span> 
+              <span className="w-8 h-8 rounded-full bg-primary/20 text-primary flex items-center justify-center text-sm">1</span>
               Unggah Aset Mencurigakan
             </h2>
             <div className="border-2 border-dashed border-gray-300 rounded-2xl p-8 flex flex-col items-center justify-center text-center min-h-[250px] hover:border-primary/50 transition-colors bg-gray-50">
@@ -172,7 +174,7 @@ export const VerificationCenter = () => {
                   </label>
                   {step === 1 && (
                     <button onClick={extractHiddenData} disabled={isProcessing} className="w-full bg-primary hover:bg-primary/90 text-white font-bold rounded-xl px-6 py-4 mt-2 transition-all flex justify-center items-center gap-3 shadow-[0_0_20px_rgba(0,240,255,0.4)] hover:-translate-y-1">
-                      {isProcessing ? <Loader2 className="w-6 h-6 animate-spin"/> : 'Ekstrak Data Tersembunyi'}
+                      {isProcessing ? <Loader2 className="w-6 h-6 animate-spin" /> : 'Ekstrak Data Tersembunyi'}
                     </button>
                   )}
                 </div>
@@ -190,7 +192,7 @@ export const VerificationCenter = () => {
 
           <div className={`glass-card p-8 rounded-3xl border ${step >= 2 ? 'border-accent/50 shadow-[0_0_20px_rgba(176,38,255,0.1)]' : 'border-gray-200 opacity-50 pointer-events-none'} transition-all duration-500`}>
             <h2 className="text-2xl font-bold text-gray-900 mb-6 flex items-center gap-3">
-              <span className="w-8 h-8 rounded-full bg-accent/20 text-accent flex items-center justify-center text-sm">2</span> 
+              <span className="w-8 h-8 rounded-full bg-accent/20 text-accent flex items-center justify-center text-sm">2</span>
               Dekripsi AES-256
             </h2>
             <div className="space-y-6">
@@ -198,17 +200,17 @@ export const VerificationCenter = () => {
                 <label className="block text-sm font-bold text-gray-700 uppercase tracking-wide mb-2">Masukkan Kunci Rahasia</label>
                 <div className="relative">
                   <Key className="absolute left-4 top-1/2 -translate-y-1/2 w-5 h-5 text-gray-500" />
-                  <input 
-                    type="text" 
-                    value={aesKeyInput} 
+                  <input
+                    type="text"
+                    value={aesKeyInput}
                     onChange={(e) => setAesKeyInput(e.target.value)}
-                    placeholder="Masukkan kunci dekripsi AES-256" 
+                    placeholder="Masukkan kunci dekripsi AES-256"
                     className="w-full bg-white border border-gray-200 rounded-xl pl-12 px-5 py-4 text-gray-900 focus:border-accent focus:ring-2 focus:ring-accent/50 transition-all shadow-inner text-lg"
                   />
                 </div>
               </div>
               <button onClick={decryptData} disabled={isProcessing || !aesKeyInput} className="w-full bg-gradient-to-r from-accent to-purple-500 hover:opacity-90 text-white font-bold rounded-xl px-6 py-4 transition-all shadow-[0_0_20px_rgba(176,38,255,0.4)] disabled:opacity-50 flex items-center justify-center gap-3 hover:-translate-y-1">
-                {isProcessing ? <Loader2 className="w-6 h-6 animate-spin"/> : 'Dekripsi Metadata'}
+                {isProcessing ? <Loader2 className="w-6 h-6 animate-spin" /> : 'Dekripsi Metadata'}
               </button>
             </div>
           </div>
@@ -221,17 +223,17 @@ export const VerificationCenter = () => {
               <FileImage className="w-6 h-6 text-gray-600" />
               Lini Masa Ekstraksi
             </h2>
-            
+
             {step === 1 && !isProcessing && (
               <div className="h-48 flex items-center justify-center text-gray-500 italic text-lg">
                 Unggah gambar untuk memulai verifikasi
               </div>
             )}
-            
+
             {(step >= 2 || isProcessing) && (
               <div className="space-y-8 relative ml-2">
                 <div className="absolute left-4 top-5 bottom-5 w-1 bg-gradient-to-b from-primary via-accent to-transparent opacity-30 z-0 rounded-full"></div>
-                
+
                 <div className="relative z-10 flex items-start gap-6">
                   <div className={`w-10 h-10 rounded-full flex items-center justify-center shadow-lg transition-colors duration-500 ${step >= 2 ? 'bg-primary text-white shadow-[0_0_15px_rgba(0,240,255,0.5)] scale-110' : 'bg-gray-800 text-gray-500'}`}>
                     <CheckCircle className="w-5 h-5" />
@@ -248,7 +250,7 @@ export const VerificationCenter = () => {
 
                 <div className="relative z-10 flex items-start gap-6">
                   <div className={`w-10 h-10 rounded-full flex items-center justify-center shadow-lg transition-colors duration-500 ${step >= 4 ? (verificationStatus === 'Verified Original' ? 'bg-accent text-white shadow-[0_0_15px_rgba(176,38,255,0.5)] scale-110' : 'bg-red-500 text-white shadow-[0_0_15px_rgba(239,68,68,0.5)] scale-110') : 'bg-gray-800 text-gray-500'}`}>
-                    {step >= 4 && verificationStatus === 'Not Verified' ? <ShieldAlert className="w-5 h-5"/> : <Lock className="w-5 h-5" />}
+                    {step >= 4 && verificationStatus === 'Not Verified' ? <ShieldAlert className="w-5 h-5" /> : <Lock className="w-5 h-5" />}
                   </div>
                   <div className="flex-1">
                     <p className="text-gray-900 font-bold text-lg">Dekripsi AES-256</p>
@@ -289,7 +291,7 @@ export const VerificationCenter = () => {
                 </div>
               )}
 
-              <button 
+              <button
                 onClick={generateReport}
                 disabled={isGeneratingPdf}
                 className="w-full flex items-center justify-center gap-3 py-4 bg-gray-50 hover:bg-gray-100 border border-gray-200 text-gray-900 font-bold rounded-xl transition-all shadow-lg hover:shadow-[0_0_15px_rgba(255,255,255,0.1)] hover:-translate-y-1"

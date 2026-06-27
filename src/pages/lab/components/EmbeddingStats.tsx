@@ -20,7 +20,7 @@ export const EmbeddingStats = ({ data }: { data: LabData }) => {
           <p className="text-sm text-gray-500 uppercase tracking-wider font-bold mb-2">Total Ciphertext</p>
           <p className="text-3xl font-extrabold text-gray-900">{data.ciphertext.length} <span className="text-lg font-normal text-gray-500">chars</span></p>
         </div>
-        
+
         <div className="bg-white border border-gray-100 p-6 rounded-2xl shadow-sm hover:shadow-md transition-shadow">
           <p className="text-sm text-gray-500 uppercase tracking-wider font-bold mb-2">Total Biner / Payload</p>
           <p className="text-3xl font-extrabold text-gray-900">{totalBits.toLocaleString()} <span className="text-lg font-normal text-gray-500">bits</span></p>
@@ -39,16 +39,16 @@ export const EmbeddingStats = ({ data }: { data: LabData }) => {
 
       <div className="mt-8 bg-white border border-gray-100 p-8 rounded-2xl">
         <div className="flex justify-between items-end mb-4">
-          <h3 className="font-bold text-gray-900 flex items-center gap-2"><PieChart className="w-5 h-5 text-accent"/> Penggunaan Kapasitas (Capacity Usage)</h3>
+          <h3 className="font-bold text-gray-900 flex items-center gap-2"><PieChart className="w-5 h-5 text-accent" /> Penggunaan Kapasitas (Capacity Usage)</h3>
           <span className="text-2xl font-bold text-accent">{capacityUsedPercent}%</span>
         </div>
         <div className="w-full h-4 bg-gray-100 rounded-full overflow-hidden shadow-inner">
-          <div 
+          <div
             className="h-full bg-gradient-to-r from-primary to-accent transition-all duration-1000 ease-out"
             style={{ width: `${Math.max(1, parseFloat(capacityUsedPercent))}%` }}
           ></div>
         </div>
-        <p className="text-sm text-gray-500 mt-4 text-center">Meskipun {totalBits.toLocaleString()} bit disisipkan, ini hanya mengambil {capacityUsedPercent}% dari total ruang LSB yang tersedia, memastikan distorsi visual yang sangat minimal.</p>
+        <p className="text-sm text-gray-500 mt-4 text-center"> {totalBits.toLocaleString()} bit disisipkan, mengambil {capacityUsedPercent}% dari total ruang LSB yang tersedia, memastikan distorsi visual seminimal mungkin.</p>
       </div>
     </div>
   );
