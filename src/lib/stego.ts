@@ -101,6 +101,8 @@ export class LSBSteganography {
       if (pixelModified) {
         modifiedPixelsCount++;
       }
+      // Force alpha to 255 to prevent premultiplied alpha from corrupting RGB values
+      data[i + 3] = 255;
     }
 
     ctx.putImageData(imgData, 0, 0);
@@ -151,7 +153,7 @@ export class LSBSteganography {
 
     // Convert 32 bits to integer length
     for (let i = 0; i < 32; i++) {
-      length = (length << 1) | lengthBits[i];
+      length = ((length << 1) | lengthBits[i]) >>> 0;
     }
 
     // Protection against garbage length (e.g. image without stego data)

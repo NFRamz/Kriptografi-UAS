@@ -1,4 +1,5 @@
 import React, { useState, useRef } from 'react';
+import { useNavigate } from 'react-router-dom';
 import { useAuthStore } from '../../store/useAuthStore';
 import { supabase } from '../../lib/supabase';
 import { AESCrypto, MetadataPayload } from '../../lib/crypto';
@@ -7,6 +8,7 @@ import { Shield, Upload, Lock, FileImage, CheckCircle, Download, Loader2, ArrowR
 import toast from 'react-hot-toast';
 
 export const ProtectedAssetGenerator = () => {
+  const navigate = useNavigate();
   const { user, profile } = useAuthStore();
   const [step, setStep] = useState(1);
   const [isProcessing, setIsProcessing] = useState(false);
@@ -414,7 +416,7 @@ export const ProtectedAssetGenerator = () => {
               <button onClick={() => { setStep(1); setImageFile(null); setImagePreview(null); setTitle(''); }} className="py-3 px-8 bg-gray-50 hover:bg-gray-100 border border-gray-200 text-gray-900 font-semibold rounded-xl transition-all shadow-lg hover:shadow-xl">
                 Proteksi Aset Lain
               </button>
-              <button onClick={() => window.location.href = '/verify'} className="py-3 px-8 bg-primary hover:bg-primary/90 text-white font-bold rounded-xl transition-all shadow-[0_0_20px_rgba(0,240,255,0.4)] hover:shadow-[0_0_30px_rgba(0,240,255,0.6)] hover:-translate-y-1">
+              <button onClick={() => navigate('/verify')} className="py-3 px-8 bg-primary hover:bg-primary/90 text-white font-bold rounded-xl transition-all shadow-[0_0_20px_rgba(0,240,255,0.4)] hover:shadow-[0_0_30px_rgba(0,240,255,0.6)] hover:-translate-y-1">
                 Lanjut ke Verifikasi
               </button>
             </div>
