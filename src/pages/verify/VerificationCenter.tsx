@@ -63,7 +63,7 @@ export const VerificationCenter = () => {
 
       // Safety: Prevent browser freeze by truncating absurdly long noise strings
       // Legitimate AES ciphertext for our JSON is rarely over 1000 characters.
-      const safeText = text.length > 2000 ? text.substring(0, 2000) + '... (truncated)' : text;
+      const safeText = text.length > 10000 ? text.substring(0, 10000) : text;
 
       setExtractedCiphertext(safeText);
       setStep(2);
@@ -87,8 +87,14 @@ export const VerificationCenter = () => {
     setIsProcessing(true);
     setTimeout(() => {
       try {
-        const cleanCiphertext = extractedCiphertext.trim();
-        const cleanKey = aesKeyInput.trim();
+        // Aggressively clean strings from any invisible characters, whitespaces, or BOMs
+        const cleanCiphertext = extractedCiphertext.replace(/[^A-Za-z0-9+/=]/g, '');
+        const cleanKey = aesKeyInput.replace(/[^0-9a-fA-F]/g, '');
+        
+        if (!cleanCiphertext || !cleanKey) {
+            throw new Error('Data ciphertext atau kunci tidak valid setelah dibersihkan.');
+        }
+
         const decoded = AESCrypto.decryptMetadata(cleanCiphertext, cleanKey);
         setMetadata(decoded);
         setVerificationStatus('Verified Original');
@@ -96,6 +102,7 @@ export const VerificationCenter = () => {
         toast.success('Kepemilikan Berhasil Diverifikasi!');
         logVerification('Verified Original', decoded);
       } catch (error: any) {
+        console.error('Decryption error details:', error);
         toast.error('Dekripsi gagal: Kunci salah atau data telah dimanipulasi');
         setVerificationStatus('Not Verified');
         setStep(4);
