@@ -1,16 +1,24 @@
 import React from 'react';
 import { Binary, ArrowRight } from 'lucide-react';
+import { motion, AnimatePresence } from 'framer-motion';
 import { LabData } from '../SecurityLab';
+import { LabAnimationState } from '../useLabAnimation';
 
-export const BinaryVisualizer = ({ data }: { data: LabData }) => {
+export const BinaryVisualizer = ({ data, anim }: { data: LabData, anim: LabAnimationState }) => {
+  const step = anim.globalStep;
+  
+  // Binary Phase is steps 21 to 37 (16 chars)
+  const isBinaryActive = step >= 21 && step <= 37;
+  const visibleCharsCount = Math.max(0, step - 21);
   // Take first 16 characters for visual demo to avoid overwhelming UI
   const previewChars = data.ciphertext.substring(0, 16).split('');
   
   return (
-    <div className="glass-card p-8 border border-gray-200 rounded-3xl bg-white/50 backdrop-blur-xl">
+    <div className={`glass-card p-8 border ${isBinaryActive ? 'border-accent/50 shadow-[0_0_30px_rgba(176,38,255,0.1)]' : 'border-gray-200'} rounded-3xl bg-white/50 backdrop-blur-xl transition-all duration-500`}>
       <div className="mb-8">
         <h2 className="text-2xl font-bold text-gray-900 flex items-center gap-3">
-          <Binary className="text-accent w-6 h-6" /> Section 2: Binary Conversion
+          <Binary className={`${isBinaryActive ? 'text-accent' : 'text-gray-400'} w-6 h-6 transition-colors`} /> 
+          Section 2: Binary Conversion
         </h2>
         <p className="text-gray-600 mt-2">Setiap karakter Ciphertext dipecah menjadi nilai ASCII dan dikonversi menjadi urutan Biner (8-bit) sebelum disisipkan ke piksel gambar.</p>
       </div>
@@ -25,11 +33,21 @@ export const BinaryVisualizer = ({ data }: { data: LabData }) => {
             </tr>
           </thead>
           <tbody>
-            {previewChars.map((char, index) => {
-              const ascii = char.charCodeAt(0);
-              const binary = ascii.toString(2).padStart(8, '0');
-              return (
-                <tr key={index} className="border-b border-gray-100 hover:bg-gray-50 transition-colors">
+            <AnimatePresence>
+              {previewChars.map((char, index) => {
+                const ascii = char.charCodeAt(0);
+                const binary = ascii.toString(2).padStart(8, '0');
+                
+                // Show if it's past this character's step, or if we are skipping to the end
+                if (index >= visibleCharsCount && step < 38) return null;
+
+                return (
+                  <motion.tr 
+                    initial={{ opacity: 0, x: -20 }}
+                    animate={{ opacity: 1, x: 0 }}
+                    key={index} 
+                    className="border-b border-gray-100 hover:bg-gray-50 transition-colors"
+                  >
                   <td className="py-4 px-6 font-mono text-lg font-bold text-gray-900">
                     <span className="bg-white border border-gray-200 px-3 py-1 rounded-md shadow-sm">{char}</span>
                   </td>
@@ -45,9 +63,10 @@ export const BinaryVisualizer = ({ data }: { data: LabData }) => {
                       <span className="font-mono text-accent tracking-widest font-bold">{binary}</span>
                     </div>
                   </td>
-                </tr>
-              );
-            })}
+                  </motion.tr>
+                );
+              })}
+            </AnimatePresence>
           </tbody>
         </table>
         {data.ciphertext.length > 16 && (
@@ -57,12 +76,20 @@ export const BinaryVisualizer = ({ data }: { data: LabData }) => {
         )}
       </div>
       
-      <div className="mt-8 bg-accent/5 border border-accent/20 p-6 rounded-2xl">
-        <h4 className="font-bold text-gray-900 mb-2">Total Panjang Biner</h4>
-        <p className="text-gray-700 font-mono text-sm break-all line-clamp-3">
-          {data.binaryStr.substring(0, 300)}... <span className="text-accent font-bold">({data.binaryStr.length.toLocaleString()} bits total)</span>
-        </p>
-      </div>
+      <AnimatePresence>
+        {step >= 38 && (
+          <motion.div 
+            initial={{ opacity: 0, y: 20 }}
+            animate={{ opacity: 1, y: 0 }}
+            className="mt-8 bg-accent/5 border border-accent/20 p-6 rounded-2xl"
+          >
+            <h4 className="font-bold text-gray-900 mb-2">Total Panjang Biner</h4>
+            <p className="text-gray-700 font-mono text-sm break-all line-clamp-3">
+              {data.binaryStr.substring(0, 300)}... <span className="text-accent font-bold">({data.binaryStr.length.toLocaleString()} bits total)</span>
+            </p>
+          </motion.div>
+        )}
+      </AnimatePresence>
     </div>
   );
 };

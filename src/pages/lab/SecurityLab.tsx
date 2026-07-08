@@ -14,6 +14,8 @@ import { ImageComparison } from './components/ImageComparison';
 import { DiffAnalyzer } from './components/DiffAnalyzer';
 import { VerificationTimeline } from './components/VerificationTimeline';
 import { AttackSimulation } from './components/AttackSimulation';
+import { useLabAnimation } from './useLabAnimation';
+import { GlobalAnimationControls } from './components/GlobalAnimationControls';
 
 export interface LabData {
   originalImage: HTMLImageElement;
@@ -32,6 +34,7 @@ export const SecurityLab = () => {
   const [labData, setLabData] = useState<LabData | null>(null);
   const [isInitializing, setIsInitializing] = useState(false);
   const [loadingStep, setLoadingStep] = useState<string | null>(null);
+  const anim = useLabAnimation(50); // Set total steps to 50 for the whole lab
 
   // Init Form State
   const [imageFile, setImageFile] = useState<File | null>(null);
@@ -235,15 +238,15 @@ export const SecurityLab = () => {
 
       {/* Sections */}
       <section id="section-1">
-        <AesVisualizer data={labData} />
+        <AesVisualizer data={labData} anim={anim} />
       </section>
 
       <section id="section-2">
-        <BinaryVisualizer data={labData} />
+        <BinaryVisualizer data={labData} anim={anim} />
       </section>
 
       <section id="section-3">
-        <LsbVisualizer data={labData} />
+        <LsbVisualizer data={labData} anim={anim} />
       </section>
 
       <section id="section-4">
@@ -264,9 +267,12 @@ export const SecurityLab = () => {
 
 
 
-      <div className="pb-20 text-center text-gray-500 font-medium">
+      <div className="pb-32 text-center text-gray-500 font-medium">
         -- End of Visualization Lab --
       </div>
+      
+      {/* Global Animation Controls */}
+      <GlobalAnimationControls anim={anim} />
     </div>
   );
 };
